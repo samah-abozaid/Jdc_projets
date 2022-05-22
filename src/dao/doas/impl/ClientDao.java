@@ -6,11 +6,9 @@ import dao.models.Client;
 import dao.models.Order;
 import dao.services.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ClientDao implements IClientDao {
 
@@ -50,21 +48,115 @@ public class ClientDao implements IClientDao {
 
     @Override
     public Client getById(int id) {
+        try {
+            Connection connection =DatabaseConnection.getInstance();
+            System.out.println("Connexion établie avec succés!");
+
+            PreparedStatement statement = connection.prepareStatement(
+                    "Slecte FROM `clients` WHERE id='?'");
+
+            statement.setInt(1, id);
+            statement.executeQuery();
+            System.out.println("Suppression réalisée");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+
+
+
         return null;
     }
 
     @Override
     public void save(Client client) {
+        try {
+            Connection connection =DatabaseConnection.getInstance();
+            System.out.println("Connexion établie avec succés!");
 
+            PreparedStatement statement = connection.prepareStatement(
+                    "save FROM `clients` ");
+
+
+            statement.executeQuery();
+            System.out.println("Suppression réalisée");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
+
+
+
 
     @Override
     public void update(Client client) {
+        String firstName = null;
+        String lastName = null;
+        Scanner input = new Scanner(System.in);
+
+
+        try {
+            System.out.println("Quel est votre prénom?");
+            firstName = input.nextLine();
+        } catch (Exception e) {
+            System.out.println("Une erreur est intevenue");
+        }
+
+        try {
+            System.out.println("Quel est votre nom?");
+            lastName = input.nextLine();
+        } catch (Exception e) {
+            System.out.println("Une erreur est intevenue");
+
+
+        }
+        try {
+        Connection connection =DatabaseConnection.getInstance();
+        System.out.println("Connexion établie avec succés!");
+        PreparedStatement statement = connection.prepareStatement(
+                "UPDATE `clients` " +
+                        "SET firstName = '?', lastName = '?'" +
+                        "WHERE id='?' ");
+
+        statement.setString(1, firstName);
+        statement.setString(1, lastName);
+        statement.setInt(3, client.getId());
+
+
+        statement.executeQuery();
+        // Attente erreur si suppression d'un ID non existant
+
+        System.out.println("Suppression réalisée");
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+
 
     }
 
     @Override
     public void delete(int id) {
+        try {
+            Connection connection =DatabaseConnection.getInstance();
+            System.out.println("Connexion établie avec succés!");
+
+            PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM `clients` WHERE id='?'");
+
+            statement.setInt(1, id);
+            statement.executeQuery();
+            System.out.println("Suppression réalisée");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+
 
     }
-}
+
